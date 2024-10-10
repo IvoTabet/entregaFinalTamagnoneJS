@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
+    <script async src="../scripts/main.js"></script>
     <title>Mundo Mascotas</title>
 </head>
     <body>
@@ -12,15 +13,31 @@
             <h2>Todo lo que tu mascota necesita</h2>
         </header>
         <main>
-            <p>En este sitio podrás comprar distintos tipos de productos para tu mascota. Por ahora para este simulador de compras tendremos 3 tipos de productos:</p>
-            <ul> 
-                <li>Alimento Balanceado</li>
-                <li>Accesorios</li>
-                <li>Juguetes</li>
-            </ul> 
-            <p>Dentro de cada tipo de producto tendrás 3 opciones, cada una con su precio, las cuales podrás agregar al "carrito". Finalmente se te mostrará la cuenta total, con todos los items y sus valores, incluyendo el valor final a pagar. Aqui abajo se encuentra el acceso al simulador en cuestión.</p>
-            <button></button>
+            <section class="categorias">
+                <div class="contCat">
+                    <button class="btnCategoria" id="btnAlimento">Alimento balanceado</button>
+                    <button class="btnCategoria" id="btnAccesorios">Accesorios</button>
+                    <button class="btnCategoria" id="btnJuguetes">Juguetes</button>
+                    <button class="btnCategoria" id="cleanFilter">Limpiar filtro</button>
+                </div>
+            </section>
+            
+            
+            <section class="productos" id="contProduc">
+            </section>
+
+            <section  class="carrito">
+                <button id="finCompra">VER CARRITO</button>
+            </section>
+
+            <div class="modalCont" id="modalCont">
+                <div class="modal" id="modal">
+                 <!-- <button id="closeCarro">Finalizar compra</button> -->   
+                </div>
+            </div>
+                
+
         </main>
-        <a href="pages/productos.html">Iniciar a comprar</a>
+        <footer></footer>
     </body>
 </html>
