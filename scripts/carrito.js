@@ -1,23 +1,39 @@
-/*let valorTotal = 0
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];*/
+let valorTotal = JSON.parse(localStorage.getItem("Valor total")) || 0
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+const cargarCarrito = () => {
+    if(carrito.length>0){
+        carrito = JSON.parse(localStorage.getItem("carrito"))
+        valorTotal = JSON.parse(localStorage.getItem("Valor total"))
+    }
+};
+
 // ====================================== AGREGAR ITEMS AL CARRITO =======================
 
-/*function agregarItem(idItem, itemAgregado){
 
+function agregarItem(btn){
+    let idItem = parseInt(btn.target.id)
+    
+    const itemAgregado = prods.find(prod => prod.id === idItem)
+    
     valorTotal += itemAgregado.valor
     if (carrito.some(prod => prod.id === idItem)) {
         const index = carrito.findIndex(producto => producto.id === idItem)
         carrito[index].cantidad++
         localStorage.setItem("carrito", JSON.stringify(carrito))
+        localStorage.setItem("Valor total", valorTotal)
     }else{
         itemAgregado.cantidad = 1
         agregarCarrito(itemAgregado)   
-        localStorage.setItem("carrito", JSON.stringify(carrito))            
+        localStorage.setItem("carrito", JSON.stringify(carrito)) 
+        localStorage.setItem("Valor total", valorTotal)           
     }
 
-}*/
-/*
-// ======================== BORRAR ITEMS DEL CARRITO ===================
+}
+
+
+
+// ======================== BORRAR ITEMS DEL CARRITO ===============================
 
 function borrarItem(btn){
     let idItem = parseInt(btn.target.id)
@@ -30,10 +46,12 @@ function borrarItem(btn){
         if(carrito[index].cantidad >0)
         {
             localStorage.setItem("carrito", JSON.stringify(carrito))
+            localStorage.setItem("Valor total", valorTotal)
         }else if(carrito[index].cantidad ===0){
             carrito = carrito.filter(prod => prod.id !== idItem);
             localStorage.removeItem("carrito", carrito[index]) 
-            localStorage.setItem("carrito", JSON.stringify(carrito))    
+            localStorage.setItem("carrito", JSON.stringify(carrito)) 
+            localStorage.setItem("Valor total", valorTotal)   
         }
     }    
     generarCardsCarrito()
@@ -104,11 +122,3 @@ btnCarro.addEventListener("click", ()=>{
     carritoModal.classList.toggle("activo")
     generarCardsCarrito()    
 })
-
-const cargarCarrito = () => {
-    if(carrito.length>0){
-        carrito = JSON.parse(localStorage.getItem("carrito"))
-    }
-};
-
-cargarCarrito()*/

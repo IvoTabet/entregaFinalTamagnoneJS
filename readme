@@ -1,0 +1,6 @@
+Guía de usuario:
+En este simulador usted podrá ver los distintos productos disponibles en el petShop "Mundo Mascotas".
+Dentro del mismo, podrá filtrar entre los productos mediante sus categorías, las cuales son alimentos, accesorios, juguetes, y también podrá limpiar el filtro. Además puede agregar todos los items que desee al carrito mediante un boton individual de cada elemento.
+Dentro del carrito tendrá la lista de todos los productos que haya seleccionado, junto con su cantidad, su valor y la opción de eliminarlos si así lo desea. También se mostrará el valor total del carrito, podrá volver a la sección de productos para seguir comprando, o podrá finalizar su compra, lo cual mostrará un mensaje agradeciendole por su tiempo.
+
+Todo lo relacionado al carrito y la generación de productos de forma dinámica se encuentran en sus respectivos archivos JavaScript. La base de datos es simulada mediante un archivo JSON, y el mensaje final de agradecimiento se realizó mediante la librería SweetAlert.
