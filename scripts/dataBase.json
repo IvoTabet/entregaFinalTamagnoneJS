@@ -1,0 +1,11 @@
+[
+    {"id": 1, "categoria":"alimento", "nombre": "alimento basico", "valor": 1000, "img": "./images/alimento_basico.png"},
+    {"id": 2, "categoria":"alimento", "nombre": "alimento comun", "valor": 2500, "img": "./images/alimento_medio.png"},
+    {"id": 3, "categoria":"alimento", "nombre": "alimento premium", "valor": 5000, "img": "./images/alimento_premium.png"},
+    {"id": 4, "categoria":"accesorio", "nombre": "collar", "valor": 2800, "img": "./images/collar.png"},
+    {"id": 5, "categoria":"accesorio", "nombre": "correa", "valor": 3000, "img": "./images/correa.png"},
+    {"id": 6, "categoria":"accesorio", "nombre": "bozal", "valor": 4000, "img": "./images/bozal.png"},
+    {"id": 7, "categoria":"juguete", "nombre": "hueso", "valor": 1500, "img": "./images/hueso.png"},
+    {"id": 8, "categoria":"juguete", "nombre": "pelota", "valor": 1000, "img": "./images/pelota.png"},
+    {"id": 9, "categoria":"juguete", "nombre": "palo rascador", "valor": 4300, "img": "./images/palo_rascador.png"}
+]

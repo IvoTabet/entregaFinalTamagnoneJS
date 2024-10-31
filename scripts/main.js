@@ -1,200 +1,190 @@
 let valorTotal = 0
-const carrito = []
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-const agregarCarrito = (nombre, precio) => {
-    carrito.push(new Producto(nombre, precio))
+const agregarCarrito = (item) => {
+    carrito.push(item)
 }
 
-class Producto {
-    constructor(nombre, precio) {
-        this.nombre = nombre
-        this.precio = parseFloat(precio)
+//===================== CREACION DE ITEMS EN LA PAGINA ===========================
+let prods = []
+const obtenerProductos = async(url) => {
+    try {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`ERROR: ${res.ok}`);
+        }
+        
+        const data = await res.json();
+        generarCards(data);
+        prods = data
+    }catch (error){
+        console.error(error.message);
     }
-}
-
-//===================== CREACION DE ITEMS EN LA PAGINA ================================================
-
-const productos = [
-    {id: 1, categoria:"alimento", nombre: "alimento basico", valor: 1000, img: "https://prd.place/200"},
-    {id: 2, categoria:"alimento", nombre: "alimento comun", valor: 2500, img: "https://prd.place/201"},
-    {id: 3, categoria:"alimento", nombre: "alimento premium", valor: 5000, img: "https://prd.place/202"},
-    {id: 4, categoria:"accesorio", nombre: "collar", valor: 2800, img: "https://prd.place/203"},
-    {id: 5, categoria:"accesorio", nombre: "correa", valor: 3000, img: "https://prd.place/204"},
-    {id: 6, categoria:"accesorio", nombre: "bozal", valor: 4000, img: "https://prd.place/205"},
-    {id: 7, categoria:"juguete", nombre: "hueso", valor: 1500, img: "https://prd.place/206"},
-    {id: 8, categoria:"juguete", nombre: "pelota", valor: 1000, img: "https://prd.place/207"},
-    {id: 9, categoria:"juguete", nombre: "palo rascador", valor: 4300, img: "https://prd.place/208"}
-]
+  }
 
 const contenedorProductos = document.getElementById("contProduc")
-productos.forEach((elem)=>{
 
-    const div = document.createElement("div")
-    div.innerHTML = `
-    <div class="cardItem ${elem.categoria}">
+function generarCards(products){
+    contenedorProductos.innerHTML = ``
+    products.forEach((elem)=>{
+        
+        const div = document.createElement("div")
+        div.innerHTML = `
+        <div class="cardItem ${elem.categoria}">
+    
+        <img src="${elem.img}" class="imgCard">
+        <h3>${elem.nombre}</h3>
+        <p>$${elem.valor}</p>
+        <button class="btnAdicionar" id="${elem.id}">Agregar al carrito</button>
+        </div>
+        `
+        contenedorProductos.appendChild(div)
+    })
+    botonComprarItems()    
+}
 
-    <img src="${elem.img}">
-    <h3>${elem.nombre}</h3>
-    <p>$${elem.valor}</p>
-    <button class="btnAdicionar" id="${elem.id}">Agregar al carrito</button>
-    </div>
-    `
-    contenedorProductos.appendChild(div)
-})
+function botonComprarItems(){
+    const btnAdd = document.getElementsByClassName("btnAdicionar")
+    for(let elm of btnAdd){
+        elm.addEventListener("click", agregarItem)
+    }
+}
+//=================================== FILTROS POR CATEGORIA ===============================
 
-//=========================== FILTROS POR CATEGORIA ===============================
+const botonesFiltrs = document.getElementsByClassName("btnCategoria")
 
-const filtroAlim = document.getElementById("btnAlimento")
-const filtroAcces = document.getElementById("btnAccesorios")
-const filtroJug = document.getElementById("btnJuguetes")
-const filtroLimpiar = document.getElementById("cleanFilter")
+for (let boton of botonesFiltrs){
+    boton.addEventListener("click", filtrar)
+}
 
-const cardsAlims = document.getElementsByClassName("alimento")
-const cardsAcces = document.getElementsByClassName("accesorio")
-const cardsJugs = document.getElementsByClassName("juguete")
+function filtrar(elm){
+    const id = elm.target.dataset.id
 
+    if(id === "slctAll"){
+        generarCards(prods)
+    }else{
+        const productsFiltrados = prods.filter(x=> x.categoria === id)
+        generarCards(productsFiltrados)
+    }
 
-filtroAlim.addEventListener("click", ()=>{
-    cardsAcces.item(0).classList.add("filterAlim")
-    cardsAcces.item(1).classList.add("filterAlim")
-    cardsAcces.item(2).classList.add("filterAlim")
-    cardsJugs.item(0).classList.add("filterAlim")
-    cardsJugs.item(1).classList.add("filterAlim")
-    cardsJugs.item(2).classList.add("filterAlim")
-})
-
-filtroAcces.addEventListener("click", ()=>{
-    cardsAlims.item(0).classList.add("filterAlim")
-    cardsAlims.item(1).classList.add("filterAlim")
-    cardsAlims.item(2).classList.add("filterAlim")
-    cardsJugs.item(0).classList.add("filterAlim")
-    cardsJugs.item(1).classList.add("filterAlim")
-    cardsJugs.item(2).classList.add("filterAlim")
-})
-
-filtroJug.addEventListener("click", ()=>{
-    cardsAlims.item(0).classList.add("filterAlim")
-    cardsAlims.item(1).classList.add("filterAlim")
-    cardsAlims.item(2).classList.add("filterAlim")
-    cardsAcces.item(0).classList.add("filterAlim")
-    cardsAcces.item(1).classList.add("filterAlim")
-    cardsAcces.item(2).classList.add("filterAlim")
-})
-
-filtroLimpiar.addEventListener("click", ()=>{
-    cardsAlims.item(0).classList.remove("filterAlim")
-    cardsAlims.item(1).classList.remove("filterAlim")
-    cardsAlims.item(2).classList.remove("filterAlim")
-    cardsAcces.item(0).classList.remove("filterAlim")
-    cardsAcces.item(1).classList.remove("filterAlim")
-    cardsAcces.item(2).classList.remove("filterAlim")
-    cardsJugs.item(0).classList.remove("filterAlim")
-    cardsJugs.item(1).classList.remove("filterAlim")
-    cardsJugs.item(2).classList.remove("filterAlim")
-})
+}
 
 // ====================================== AGREGAR ITEMS AL CARRITO =======================
 
-const btnAdd = document.getElementsByClassName("btnAdicionar")
 
-btnAdd.item(0).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 1){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
+function agregarItem(btn){
+    let idItem = parseInt(btn.target.id)
+    
+    const itemAgregado = prods.find(prod => prod.id === idItem)
+    
+    valorTotal += itemAgregado.valor
+    if (carrito.some(prod => prod.id === idItem)) {
+        const index = carrito.findIndex(producto => producto.id === idItem)
+        carrito[index].cantidad++
+        localStorage.setItem("carrito", JSON.stringify(carrito))
+    }else{
+        itemAgregado.cantidad = 1
+        agregarCarrito(itemAgregado)   
+        localStorage.setItem("carrito", JSON.stringify(carrito))            
     }
-})
-btnAdd.item(1).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 2){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
-    }
-})
-btnAdd.item(2).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 3){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
-    }
-})
-btnAdd.item(3).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 4){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
-    }
-})
-btnAdd.item(4).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 5){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
-    }
-})
-btnAdd.item(5).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 6){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
-    }
-})
-btnAdd.item(6).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 7){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
-    }
-})
-btnAdd.item(7).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 8){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
-    }
-})
-btnAdd.item(8).addEventListener("click", ()=>{
-    for(let info of productos){
-        if(info.id === 9){
-            valorTotal += info.valor
-            agregarCarrito(info.nombre, info.valor)
-        }
-    }
-})
 
+}
+
+
+//================================== MUESTRO EL MODAL DEL CARRITO ========================
 
 const carritoModal = document.getElementById("modalCont")
 const btnCarro = document.getElementById("finCompra")
-const btnCloseCarro = document.getElementById("closeCarro")
 const modal = document.getElementById("modal")
 
+function generarCardsCarrito(){
+    modal.innerHTML=``
+    carrito.forEach((elem)=>{
+        if(elem.cantidad>0){
+            const div = document.createElement("div")
+            div.innerHTML = `
+            <div class="cardCarrito">
+                <img src="${elem.img}" class="imgCardCarrito">
+                <h3>${elem.nombre}</h3>
+                <p>Cantidad: ${elem.cantidad}</p>
+                <p>$${elem.valor*elem.cantidad}</p>    
+                <button class="btnBorrar" id="${elem.id}">Borrar</button>
+            </div>
+            `
+            modal.appendChild(div)
+        }
+    })
 
+    const div = document.createElement("div")
+    div.innerHTML=`
+    <div class="contBotonesFinales">
+        <p class="valorTotal">Valor total: R$${valorTotal}</p>
+        <button id="closeCarro">Seguir comprando</button> 
+        <button id="finalizarCompra">Finalizar compra</button>
+    </div>
+    `
+    modal.appendChild(div)
+
+    const btnCloseCarro = document.getElementById("closeCarro")
+    btnCloseCarro.addEventListener("click", ()=>{
+        carritoModal.classList.toggle("activo")
+    })
+
+    const btnFinalizarCompra = document.getElementById("finalizarCompra")
+    btnFinalizarCompra.addEventListener("click", ()=>{
+        carritoModal.classList.toggle("activo")
+        carrito=[]
+        localStorage.clear()
+        valorTotal=0
+        Swal.fire({
+            title: "Usted ha finalizado su compra",
+            text: "Muchas gracias por haberse tomado el tiempo de utilizar mi simulador, le deseo un gran día.",
+            icon: "success"
+          });
+
+    })
+
+    const btnBorrar = document.getElementsByClassName("btnBorrar")
+
+    for (let boton of btnBorrar){
+        boton.addEventListener("click", borrarItem)
+    }
+}
 
 
 
 btnCarro.addEventListener("click", ()=>{
+    modal.innerHTML=``
     carritoModal.classList.toggle("activo")
+    generarCardsCarrito()    
+})
 
-    let mensaje = ""
-    for(let items of carrito)
-    {
-        mensaje += "Nombre: " + items.nombre + "-------------- Valor producto: $" + items.precio + "\n"
+
+function borrarItem(btn){
+    let idItem = parseInt(btn.target.id)
+    const itemABorrar = carrito.find(item => item.id === idItem)
+    
+    valorTotal -= itemABorrar.valor
+    if (carrito.some(item => item.id === idItem)) {
+        const index = carrito.findIndex(producto => producto.id === idItem)
+        carrito[index].cantidad--
+        if(carrito[index].cantidad >0)
+        {
+            localStorage.setItem("carrito", JSON.stringify(carrito))
+        }else if(carrito[index].cantidad ===0){
+            carrito = carrito.filter(prod => prod.id !== idItem);
+            localStorage.removeItem("carrito", carrito[index]) 
+            localStorage.setItem("carrito", JSON.stringify(carrito))    
+        }
+    }    
+    generarCardsCarrito()
+}
+
+const cargarCarrito = () => {
+    if(carrito.length>0){
+        carrito = JSON.parse(localStorage.getItem("carrito"))
     }
-    modal.innerHTML= `
-    <p>Productos agregados</p>
-    <p>${mensaje}</p>
-    <p>Valor total a pagar: $${valorTotal}</p>
-    `
-})
+};
 
-btnCloseCarro.addEventListener("click", ()=>{
-    carritoModal.classList.toggle("activo")
-})
+obtenerProductos('./scripts/dataBase.json')
+cargarCarrito()

@@ -7,7 +7,7 @@
     
     <title>Mundo Mascotas</title>
 </head>
-    <body>
+    <body>         
         <header>
             <h1>Mundo Mascotas</h1>
             <h2>Todo lo que tu mascota necesita</h2>
@@ -15,10 +15,10 @@
         <main>
             <section class="categorias">
                 <div class="contCat">
-                    <button class="btnCategoria" id="btnAlimento">Alimento balanceado</button>
-                    <button class="btnCategoria" id="btnAccesorios">Accesorios</button>
-                    <button class="btnCategoria" id="btnJuguetes">Juguetes</button>
-                    <button class="btnCategoria" id="cleanFilter">Limpiar filtro</button>
+                    <button class="btnCategoria" id="btnAlimento" data-id="alimento">Alimento balanceado</button>
+                    <button class="btnCategoria" id="btnAccesorios" data-id="accesorio">Accesorios</button>
+                    <button class="btnCategoria" id="btnJuguetes" data-id="juguete">Juguetes</button>
+                    <button class="btnCategoria" id="cleanFilter" data-id="slctAll">Limpiar filtro</button>
                 </div>
             </section>
             
@@ -32,14 +32,19 @@
 
             <div class="modalCont" id="modalCont">
                 <div class="modal" id="modal">
-                 <!-- <button id="closeCarro">Finalizar compra</button> -->   
                 </div>
             </div>
-                
+            <section id="mensajeFinal">
+
+            </section>
 
         </main>
-        <footer></footer>
-
-        <script async src="../scripts/main.js"></script>
+        <footer>
+            <p>todos los derechos reservados</p>
+        </footer>
+        <script src="sweetalert2.all.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- <script src="../scripts/carrito.js"></script>  -->   
+        <script async src="../scripts/main.js"></script> 
     </body>
 </html>
